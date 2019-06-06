@@ -9,43 +9,74 @@ namespace ConsoleApp1
 {
      abstract class BiatlonCalculation
     {
-        int sec = 0;
-        int point = 0;
-        bool hit = false;
-        public void Game()
+        public int Game(int sec, int hitCount)
         {
-            Running(sec, point);
-            Shooting(point, hit);
+            int res = 0;
+            
+            res+= Shooting(hitCount);
+            res -= Running(sec);
+            res = Check(res);
+            return res;
         }
 
 
-        public abstract void Running(int sec, int point);
+        public abstract int Running(int sec);
 
-        public abstract void Shooting(int point, bool hit);
+        public abstract int Shooting(int hitCount);
+        public abstract int Check(int total);
     }
 
     class ManCalculation : BiatlonCalculation
     {
-        public override void Running(int sec, int point)
+        public override int Check(int total)
         {
-            point -= 5;
-            sec++;
+            return total;
         }
 
-        public override void Shooting(int point, bool hit)
+        public override int Running(int sec)
         {
-            if (hit) { point += 100; }
+            return sec*5;
+        }
+
+        public override int Shooting(int hitCount)
+        {
+            return hitCount *100;
         }
     }
 
-    //class WomanCalculation : BiatlonCalculation
-    //{
+    class WomanCalculation : BiatlonCalculation
+    {
+        public override int Check(int total)
+        {
+            return total;
+        }
 
-    //}
+        public override int Running(int sec)
+        {
+            return sec * 4;
+        }
 
-    //class ChildrenCalculation : BiatlonCalculation
-    //{
+        public override int Shooting(int hitCount)
+        {
+            return hitCount * 100;
+        }
+    }
 
+    class ChildrenCalculation : BiatlonCalculation
+    {
+        public override int Check(int total)
+        {
+            return (total < 0) ? 0 : total;
+        }
 
-    //}
+        public override int Running(int sec)
+        {
+            return sec * 2;
+        }
+
+        public override int Shooting(int hitCount)
+        {
+            return hitCount * 200;
+        }
+    }
 }
